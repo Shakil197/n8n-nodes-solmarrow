@@ -99,6 +99,10 @@ only on `localhost`. Use n8n Cloud, a server with a domain, or a tunnel.
 
 ## Example
 
+A ready-made workflow to try every action: import [`examples/solmarrow-demo.workflow.json`](examples/solmarrow-demo.workflow.json)
+(n8n → Workflows → ⋯ → Import from file), pick your SolMarrow credential, and run it. It saves a draft, reads it back,
+uploads an image from a link, lists drafts and deletes the demo draft.
+
 Post every new RSS item to LinkedIn and X, one hour later:
 
 1. **RSS Feed Trigger**

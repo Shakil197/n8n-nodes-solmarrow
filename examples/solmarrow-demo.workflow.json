@@ -1,0 +1,228 @@
+{
+  "name": "SolMarrow demo",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "ddff61b0-095a-4b07-a908-3067039094d9",
+      "name": "Run the demo",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "workspace",
+        "operation": "getAll"
+      },
+      "id": "7921f361-fa71-44fe-8790-74badf32fab2",
+      "name": "Get workspaces",
+      "type": "n8n-nodes-solmarrow.solMarrow",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "credentials": {
+        "solMarrowOAuth2Api": {
+          "id": "solmarrowAccount",
+          "name": "SolMarrow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "post",
+        "operation": "create",
+        "workspaceId": "={{ $json.id }}",
+        "text": "Hello from n8n! This draft was made by the SolMarrow node.",
+        "when": "draft",
+        "accountIds": [],
+        "additionalFields": {}
+      },
+      "id": "469d31ff-37f1-4cd8-bc47-ee0931e7ea98",
+      "name": "Create draft post",
+      "type": "n8n-nodes-solmarrow.solMarrow",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "credentials": {
+        "solMarrowOAuth2Api": {
+          "id": "solmarrowAccount",
+          "name": "SolMarrow account"
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "post",
+        "operation": "get",
+        "postId": "={{ $json.post_id }}"
+      },
+      "id": "45529283-8ef2-46fe-8939-09a450c0bb59",
+      "name": "Get the post",
+      "type": "n8n-nodes-solmarrow.solMarrow",
+      "typeVersion": 1,
+      "position": [
+        660,
+        0
+      ],
+      "credentials": {
+        "solMarrowOAuth2Api": {
+          "id": "solmarrowAccount",
+          "name": "SolMarrow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "media",
+        "operation": "upload",
+        "workspaceId": "={{ $('Get workspaces').first().json.id }}",
+        "source": "url",
+        "url": "https://solmarrow.com/og.png",
+        "uploadOptions": {
+          "fileName": "n8n-demo.png"
+        }
+      },
+      "id": "2cf6b311-2416-41bb-8681-e48915f26352",
+      "name": "Upload image from URL",
+      "type": "n8n-nodes-solmarrow.solMarrow",
+      "typeVersion": 1,
+      "position": [
+        880,
+        0
+      ],
+      "credentials": {
+        "solMarrowOAuth2Api": {
+          "id": "solmarrowAccount",
+          "name": "SolMarrow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "post",
+        "operation": "getAll",
+        "workspaceId": "={{ $('Get workspaces').first().json.id }}",
+        "limit": 5,
+        "filters": {
+          "status": "draft"
+        }
+      },
+      "id": "f385e522-c0a0-4f87-945a-196d9145f21c",
+      "name": "List drafts",
+      "type": "n8n-nodes-solmarrow.solMarrow",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        0
+      ],
+      "credentials": {
+        "solMarrowOAuth2Api": {
+          "id": "solmarrowAccount",
+          "name": "SolMarrow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "post",
+        "operation": "delete",
+        "postId": "={{ $('Create draft post').first().json.post_id }}"
+      },
+      "id": "684cf3a9-4f01-479c-9ea0-ef1cff88da05",
+      "name": "Delete the demo draft",
+      "type": "n8n-nodes-solmarrow.solMarrow",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        0
+      ],
+      "credentials": {
+        "solMarrowOAuth2Api": {
+          "id": "solmarrowAccount",
+          "name": "SolMarrow account"
+        }
+      },
+      "executeOnce": true
+    }
+  ],
+  "connections": {
+    "Run the demo": {
+      "main": [
+        [
+          {
+            "node": "Get workspaces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get workspaces": {
+      "main": [
+        [
+          {
+            "node": "Create draft post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create draft post": {
+      "main": [
+        [
+          {
+            "node": "Get the post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get the post": {
+      "main": [
+        [
+          {
+            "node": "Upload image from URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload image from URL": {
+      "main": [
+        [
+          {
+            "node": "List drafts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List drafts": {
+      "main": [
+        [
+          {
+            "node": "Delete the demo draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}
