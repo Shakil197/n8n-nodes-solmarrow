@@ -1,5 +1,6 @@
-# Publishes to npm with a provenance statement (required for n8n community nodes) when a version tag is pushed:
-#   npm version patch && git push --follow-tags
+# Publishes to npm with a provenance statement (required for n8n community nodes) when a version tag is pushed
+# (npm version patch && git push --follow-tags) or when main is pushed to the `release` branch
+# (git push origin main:release). The version in package.json must be new.
 # Same steps as n8n's own template: `npm run release` lints, builds and runs `npm publish` with provenance.
 # npm can't set up trusted publishing before a package exists, so the first version is published with a short-lived
 # token in the NPM_TOKEN secret. After that: npmjs.com → package settings → Trusted publisher → GitHub Actions, this
@@ -9,6 +10,7 @@ name: Publish
 on:
   push:
     tags: ['v*.*.*']
+    branches: [release]
 
 permissions:
   contents: read
