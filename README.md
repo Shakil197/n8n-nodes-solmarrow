@@ -132,8 +132,8 @@ npm test        # builds, then runs the tests in test/
 npm run dev     # n8n with this package loaded, at http://localhost:5678
 ```
 
-Releases are published from GitHub Actions with an npm provenance statement (`.github/workflows/publish.yml`):
-`npm version patch && git push --follow-tags`.
+Releases are published from GitHub Actions with an npm provenance statement through npm trusted publishing (no
+tokens): bump the version in `package.json`, push to `main`, then `git push origin main:release`.
 
 ## License
 

@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-solmarrow",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "SolMarrow for n8n: schedule and publish social media posts to 20 networks, and start workflows when a post is published or fails.",
   "keywords": [
     "n8n-community-node-package",
