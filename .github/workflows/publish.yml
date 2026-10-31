@@ -1,8 +1,9 @@
 # Publishes to npm with a provenance statement (required for n8n community nodes) when a version tag is pushed:
 #   npm version patch && git push --follow-tags
+# Same steps as n8n's own template: `npm run release` lints, builds and runs `npm publish` with provenance.
 # npm can't set up trusted publishing before a package exists, so the first version is published with a short-lived
 # token in the NPM_TOKEN secret. After that: npmjs.com → package settings → Trusted publisher → GitHub Actions, this
-# repository, workflow "publish.yml"; then delete the token and the secret. npm uses the trusted publisher first.
+# repository, workflow "publish.yml"; then delete the token and the secret, and npm uses the trusted publisher.
 name: Publish
 
 on:
@@ -20,12 +21,14 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: 22
+          node-version: 24
           registry-url: https://registry.npmjs.org
-      - run: npm install -g npm@11.6.2
-      - run: npm ci
-      - run: npm run lint
+      - run: npm install -g npm@11.21.1
+      - run: npm ci --ignore-scripts
       - run: npm test
-      - run: npm publish --provenance --access public
+      - name: Release
+        run: |
+          if [ -n "$NPM_TOKEN" ]; then npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"; fi
+          npm run release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

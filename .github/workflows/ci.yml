@@ -15,7 +15,9 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: 22
-      - run: npm ci
+          node-version: 24
+      # npm 10 misreads this lock file (eslint and typescript-eslint need different "ignore" versions); npm 11 is fine.
+      - run: npm install -g npm@11.21.1
+      - run: npm ci --ignore-scripts
       - run: npm run lint
       - run: npm test
