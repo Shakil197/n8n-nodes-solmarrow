@@ -1,0 +1,10 @@
+{
+	"node": "n8n-nodes-solmarrow.solMarrow",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Marketing & Content", "Communication"],
+	"resources": {
+		"credentialDocumentation": [{ "url": "https://solmarrow.com/developers" }],
+		"primaryDocumentation": [{ "url": "https://solmarrow.com/developers" }]
+	}
+}
