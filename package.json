@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-solmarrow",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "SolMarrow for n8n: schedule and publish social media posts to 20 networks, and start workflows when a post is published or fails.",
   "keywords": [
     "n8n-community-node-package",
@@ -12,7 +12,7 @@
   "license": "MIT",
   "homepage": "https://solmarrow.com/developers",
   "author": {
-    "name": "shakil197",
+    "name": "SolMarrow",
     "email": "support@solmarrow.com",
     "url": "https://solmarrow.com"
   },
