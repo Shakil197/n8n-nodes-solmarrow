@@ -151,6 +151,13 @@ test('Post → Create schedules with the workflow time zone and per-account text
 	assert.equal(out[0].pairedItem.item, 0);
 });
 
+test('Post → Create: a draft takes its accounts from Additional Fields', async () => {
+	let sent;
+	const api = fakeApi({ [`POST /workspaces/${WS}/posts`]: (req) => { sent = req.body; return { id: 'p1', status: 'draft' }; } });
+	await run(execContext({ api, params: { resource: 'post', operation: 'create', workspaceId: WS, text: 'x', when: 'draft', additionalFields: { accountIds: [ACC] } } }));
+	assert.deepEqual(sent.account_ids, [ACC]);
+});
+
 test('Post → Create sends draft or publish_now, never both', async () => {
 	for (const [when, flag] of [['draft', 'draft'], ['now', 'publish_now']]) {
 		const api = fakeApi({ [`POST /workspaces/${WS}/posts`]: (o) => o.body });

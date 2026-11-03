@@ -29,12 +29,6 @@ export class SolMarrowTrigger implements INodeType {
 		webhooks: [{ name: 'default', httpMethod: 'POST', responseMode: 'onReceived', path: 'webhook' }],
 		properties: [
 			{
-				displayName: 'n8n must be reachable at a public https address for SolMarrow to send events to it.',
-				name: 'notice',
-				type: 'notice',
-				default: '',
-			},
-			{
 				displayName: 'Workspace Name or ID',
 				name: 'workspaceId',
 				type: 'options',

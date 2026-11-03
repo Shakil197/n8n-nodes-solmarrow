@@ -173,9 +173,10 @@ export class SolMarrow implements INodeType {
 				name: 'accountIds',
 				type: 'multiOptions',
 				typeOptions: { loadOptionsMethod: 'getAccounts', loadOptionsDependsOn: ['workspaceId'] },
+				required: true,
 				default: [],
-				description: 'The social accounts to post to (needed unless you save a draft). Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
-				displayOptions: { show: { resource: ['post'], operation: ['create'] } },
+				description: 'The social accounts to post to. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+				displayOptions: { show: { resource: ['post'], operation: ['create'], when: ['now', 'schedule'] } },
 			},
 			{
 				displayName: 'Additional Fields',
@@ -185,6 +186,15 @@ export class SolMarrow implements INodeType {
 				default: {},
 				displayOptions: { show: { resource: ['post'], operation: ['create'] } },
 				options: [
+					{
+						displayName: 'Account Names or IDs',
+						name: 'accountIds',
+						type: 'multiOptions',
+						typeOptions: { loadOptionsMethod: 'getAccounts', loadOptionsDependsOn: ['workspaceId'] },
+						default: [],
+						description: 'For a draft: the accounts it is meant for (optional). Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+						displayOptions: { show: { '/when': ['draft'] } },
+					},
 					{
 						displayName: 'Media IDs',
 						name: 'mediaIds',
@@ -400,7 +410,8 @@ export class SolMarrow implements INodeType {
 					const extra = this.getNodeParameter('additionalFields', i, {}) as IDataObject;
 					const body: IDataObject = {
 						text: this.getNodeParameter('text', i, '') as string,
-						account_ids: splitIds(this.getNodeParameter('accountIds', i, [])),
+						// Publishing needs accounts (a required field); a draft takes them from Additional Fields, if any.
+						account_ids: splitIds(when === 'draft' ? extra.accountIds : this.getNodeParameter('accountIds', i, [])),
 						media_ids: splitIds(extra.mediaIds),
 					};
 					if (when === 'draft') body.draft = true;

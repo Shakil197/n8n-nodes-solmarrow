@@ -51,7 +51,8 @@ stops n8n's access and turns off its triggers.
 
 - **When**: _Save as Draft_, _Schedule_ (pick **Publish At**), or _Publish Now_. Times without an offset use the
   workflow's time zone.
-- **Accounts**: choose from the list, or pass IDs from **Account → Get Many**.
+- **Accounts**: required for Publish Now and Schedule; choose from the list, or pass IDs from **Account → Get Many**.
+  For a draft they are optional, under **Additional Fields**.
 - **Media IDs**: upload with **Media → Upload** first, then pass the `media_id` values, separated by commas, in order.
 - **Text per Account**: different text for some accounts.
 - **Network Settings (JSON)**: settings some networks need, keyed by account ID, for example
